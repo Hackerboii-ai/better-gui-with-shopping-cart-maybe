@@ -2,11 +2,16 @@ import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 import watchImage from "@/assets/product-watch.jpg";
 import bagImage from "@/assets/product-bag.jpg";
 import sunglassesImage from "@/assets/product-sunglasses.jpg";
 
 const FeaturedProducts = () => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
   const featuredProducts = [
     {
       id: "1",
@@ -43,8 +48,14 @@ const FeaturedProducts = () => {
   ];
 
   const handleAddToCart = (productId: string) => {
-    console.log(`Added product ${productId} to cart`);
-    // Cart functionality will be implemented later
+    const product = featuredProducts.find(p => p.id === productId);
+    if (product) {
+      addToCart(product);
+      toast({
+        title: "Added to Cart",
+        description: `${product.name} has been added to your cart.`,
+      });
+    }
   };
 
   const handleToggleWishlist = (productId: string) => {
@@ -58,13 +69,13 @@ const FeaturedProducts = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Featured
+            Azure Store
             <span className="bg-gradient-to-r from-premium to-accent bg-clip-text text-transparent ml-3">
-              Collection
+              Featured
             </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Discover our handpicked selection of premium products, crafted with attention to detail and designed for those who appreciate the finer things in life.
+            Discover our handpicked selection of premium Azure Store products, crafted with attention to detail and designed for those who appreciate the finer things in life.
           </p>
         </div>
 

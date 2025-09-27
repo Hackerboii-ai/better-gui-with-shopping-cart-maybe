@@ -22,16 +22,16 @@ const Hero = () => {
           {/* Premium Badge */}
           <div className="inline-flex items-center space-x-2 bg-premium/10 backdrop-blur-sm border border-premium/20 rounded-full px-4 py-2 mb-6">
             <Star className="w-4 h-4 text-premium fill-current" />
-            <span className="text-sm font-medium text-premium">Premium Collection 2024</span>
+            <span className="text-sm font-medium text-premium">Azure Store Collection 2024</span>
           </div>
 
           {/* Main Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
             Discover
             <span className="block bg-gradient-to-r from-premium to-accent bg-clip-text text-transparent">
-              Luxury
+              Azure Store
             </span>
-            Redefined
+            Excellence
           </h1>
 
           {/* Subtitle */}

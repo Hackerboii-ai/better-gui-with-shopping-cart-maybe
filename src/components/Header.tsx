@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingBag, Search, User, Menu, X } from "lucide-react";
+import { ShoppingBag, Search, User, Menu, X, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
+import SearchModal from "@/components/SearchModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(0);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
+  const { cartItemsCount } = useCart();
 
   const navigationItems = [
     { name: "Products", href: "/products" },
@@ -23,9 +35,9 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-luxury to-premium rounded-md flex items-center justify-center">
-              <span className="text-luxury-foreground font-bold text-sm">L</span>
+              <span className="text-luxury-foreground font-bold text-sm">A</span>
             </div>
-            <span className="text-xl font-bold text-foreground">LUXE</span>
+            <span className="text-xl font-bold text-foreground">AZURE STORE</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -43,26 +55,72 @@ const Header = () => {
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hidden sm:flex"
+              onClick={() => setIsSearchOpen(true)}
+            >
               <Search className="h-5 w-5" />
             </Button>
             
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5 text-sm font-medium">
+                    {user?.firstName} {user?.lastName}
+                  </div>
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                    {user?.email}
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/orders" className="cursor-pointer">
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      Orders
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => navigate('/login')}
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            )}
+            
             <Button 
               variant="ghost" 
-              size="icon"
-              onClick={() => navigate('/login')}
+              size="icon" 
+              className="relative"
+              onClick={() => navigate('/cart')}
             >
-              <User className="h-5 w-5" />
-            </Button>
-            
-            <Button variant="ghost" size="icon" className="relative">
               <ShoppingBag className="h-5 w-5" />
-              {cartItems > 0 && (
+              {cartItemsCount > 0 && (
                 <Badge 
                   variant="secondary" 
                   className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-premium text-premium-foreground"
                 >
-                  {cartItems}
+                  {cartItemsCount}
                 </Badge>
               )}
             </Button>
@@ -93,7 +151,14 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button variant="ghost" className="justify-start p-0 h-auto font-medium text-muted-foreground hover:text-foreground">
+              <Button 
+                variant="ghost" 
+                className="justify-start p-0 h-auto font-medium text-muted-foreground hover:text-foreground"
+                onClick={() => {
+                  setIsSearchOpen(true);
+                  setIsMenuOpen(false);
+                }}
+              >
                 <Search className="h-5 w-5 mr-2" />
                 Search
               </Button>
@@ -101,6 +166,12 @@ const Header = () => {
           </div>
         )}
       </div>
+      
+      {/* Search Modal */}
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </header>
   );
 };
