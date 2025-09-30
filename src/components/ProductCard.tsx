@@ -42,31 +42,31 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist }: ProductCardProp
     : 0;
 
   return (
-    <Card className="group relative overflow-hidden border-0 shadow-subtle hover:shadow-luxury transition-all duration-300 bg-card">
+    <Card className="group relative overflow-hidden border border-gray-200 hover:border-orange-300 shadow-sm hover:shadow-xl transition-all duration-300 bg-white rounded-lg">
       <div className="relative overflow-hidden">
         {/* Product Image */}
-        <div className="aspect-square overflow-hidden bg-muted">
+        <div className="aspect-square overflow-hidden bg-gray-50">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
         </div>
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col space-y-2">
+        <div className="absolute top-2 left-2 flex flex-col space-y-1">
           {product.isNew && (
-            <Badge className="bg-premium text-premium-foreground text-xs">
+            <Badge className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
               New
             </Badge>
           )}
           {product.isBestseller && (
-            <Badge className="bg-luxury text-luxury-foreground text-xs">
+            <Badge className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
               Bestseller
             </Badge>
           )}
           {discountPercentage > 0 && (
-            <Badge variant="destructive" className="text-xs">
+            <Badge className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">
               -{discountPercentage}%
             </Badge>
           )}
@@ -76,8 +76,8 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist }: ProductCardProp
         <Button
           variant="ghost"
           size="icon"
-          className={`absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border-0 transition-colors duration-200 ${
-            isWishlisted ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
+          className={`absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm transition-all duration-200 ${
+            isWishlisted ? 'text-red-500 bg-red-50 border-red-200' : 'text-gray-600 hover:text-red-500 hover:bg-red-50'
           }`}
           onClick={handleToggleWishlist}
         >
@@ -85,11 +85,11 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist }: ProductCardProp
         </Button>
 
         {/* Quick Add Button - Shows on Hover */}
-        <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-x-2 bottom-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
           <Button
             onClick={handleAddToCart}
             disabled={isLoading}
-            className="w-full bg-luxury hover:bg-luxury/90 text-luxury-foreground rounded-full"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-md font-medium py-2 shadow-lg"
           >
             <ShoppingBag className="w-4 h-4 mr-2" />
             {isLoading ? "Adding..." : "Add to Cart"}
@@ -97,7 +97,7 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist }: ProductCardProp
         </div>
       </div>
 
-      <CardContent className="p-4">
+      <CardContent className="p-3">
         {/* Rating */}
         <div className="flex items-center space-x-1 mb-2">
           <div className="flex">
@@ -106,30 +106,37 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist }: ProductCardProp
                 key={i}
                 className={`w-3 h-3 ${
                   i < Math.floor(product.rating)
-                    ? 'text-premium fill-current'
-                    : 'text-muted-foreground'
+                    ? 'text-yellow-400 fill-current'
+                    : 'text-gray-300'
                 }`}
               />
             ))}
           </div>
-          <span className="text-xs text-muted-foreground">({product.reviews})</span>
+          <span className="text-xs text-gray-500">({product.reviews})</span>
         </div>
 
         {/* Product Name */}
-        <h3 className="font-semibold text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors cursor-pointer">
+        <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 hover:text-orange-600 transition-colors cursor-pointer text-sm">
           {product.name}
         </h3>
 
         {/* Price */}
         <div className="flex items-center space-x-2">
-          <span className="text-lg font-bold text-foreground">
+          <span className="text-lg font-bold text-gray-900">
             ${product.price.toFixed(2)}
           </span>
           {product.originalPrice && (
-            <span className="text-sm text-muted-foreground line-through">
+            <span className="text-sm text-gray-500 line-through">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
+        </div>
+
+        {/* Delivery Info */}
+        <div className="mt-2 text-xs text-gray-600">
+          <span className="text-green-600 font-medium">FREE delivery</span>
+          <span className="mx-1">•</span>
+          <span>Get it by tomorrow</span>
         </div>
       </CardContent>
     </Card>

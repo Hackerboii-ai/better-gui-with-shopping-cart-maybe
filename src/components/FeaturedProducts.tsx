@@ -64,30 +64,31 @@ const FeaturedProducts = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-muted/30">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Azure Store
-            <span className="bg-gradient-to-r from-premium to-accent bg-clip-text text-transparent ml-3">
-              Featured
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Featured
+            <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent ml-3">
+              Products
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Discover our handpicked selection of premium Azure Store products, crafted with attention to detail and designed for those who appreciate the finer things in life.
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Handpicked products that our customers love. Quality guaranteed with fast shipping and great prices.
           </p>
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={handleAddToCart}
-              onToggleWishlist={handleToggleWishlist}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {featuredProducts.map((product, index) => (
+            <div key={product.id} className="animate-scale-in" style={{animationDelay: `${index * 0.1}s`}}>
+              <ProductCard
+                product={product}
+                onAddToCart={handleAddToCart}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            </div>
           ))}
         </div>
 
@@ -96,7 +97,7 @@ const FeaturedProducts = () => {
           <Button 
             asChild 
             size="lg"
-            className="bg-luxury hover:bg-luxury/90 text-luxury-foreground px-8 py-4 rounded-full font-semibold"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <Link to="/products" className="inline-flex items-center">
               View All Products
